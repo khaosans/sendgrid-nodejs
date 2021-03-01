@@ -1,9 +1,10 @@
 'use strict';
 
-const ecdsa = require('starkbank-ecdsa');
+const ecdsa = require('@starkbank/ecdsa');
 const Ecdsa = ecdsa.Ecdsa;
 const Signature = ecdsa.Signature;
 const PublicKey = ecdsa.PublicKey;
+const PrivateKey = ecdsa.PrivateKey;
 
 /*
  * This class allows you to use the Event Webhook feature. Read the docs for
@@ -18,6 +19,13 @@ class EventWebhook {
    */
   convertPublicKeyToECDSA(publicKey) {
     return PublicKey.fromPem(publicKey);
+  }
+
+  signWithTimeStamp(privateKey, payload, timestamp) {
+    let timestampPayload = Buffer.isBuffer(payload) ? payload.toString() : payload;
+    timestampPayload = timestamp + timestampPayload;
+    let fromPem = PrivateKey.fromPem(privateKey);
+    return Ecdsa.sign(timestampPayload, fromPem).toBase64();
   }
 
   /**

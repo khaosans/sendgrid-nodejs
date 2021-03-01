@@ -8,7 +8,9 @@ declare class EventWebhook {
      */
     convertPublicKeyToECDSA(publicKey: string): PublicKey;
 
-    /**
+    signWithTimeStamp(privateKey:string, payload:string, timestamp:string): string;
+
+        /**
      *
      * @param {PublicKey} publicKey elliptic curve public key
      * @param {string|Buffer} payload event payload in the request body
